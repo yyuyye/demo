@@ -1,80 +1,64 @@
 package com.example.demo.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.service.EmailService;
+import com.example.demo.dao.EmailVerificationCodeRepository;
+import com.example.demo.entity.EmailVerificationCode;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
+
+
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 public class EmailController {
-    public static class EmailVerificationRequest {
-        private String code;
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public String getHttpSessionId() {
-            return httpSessionId;
-        }
-
-        public void setHttpSessionId(String httpSessionId) {
-            this.httpSessionId = httpSessionId;
-        }
-
-        private String httpSessionId;
-
-        // getters and setters
-    }
-    @Resource
+    @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private EmailVerificationCodeRepository codeRepository;
+
     @RequestMapping("getEmailCode")
-    //通过httpsession来存入验证码值
-    public Map<String, String> getEmail(@RequestParam String toEmail, HttpSession httpSession) {
+    public Map<String, String> getEmail(@RequestParam String toEmail) {
         Random random = new Random();
-        //生成随机验证码
-        int code = 1000 + random.nextInt(8999);
-        //把验证码存入session中
-        httpSession.setAttribute("code", code);
-        System.out.println(httpSession.getAttribute("code"));
-        System.out.println(httpSession.getId());
-        Map<String,String> response = new HashMap<>();
-        //执行发送验证码
+        String code = String.format("%06d", random.nextInt(999999));
+
+        Map<String, String> response = new HashMap<>();
+
         if (emailService.sendEmail(toEmail, "验证码", "欢迎注册，您的验证码为：" + code)) {
-            response.put("status","获取成功");
-            response.put("sessionId", httpSession.getId());
-        }else {
-            response.put("status","获取失败");
+            // 保存验证码到数据库
+            LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(5); // 验证码有效期为5分钟
+            EmailVerificationCode verificationCode = new EmailVerificationCode();
+            verificationCode.setEmail(toEmail);
+            verificationCode.setCode(code);
+            verificationCode.setCreatedAt(LocalDateTime.now());
+            verificationCode.setExpiresAt(expiresAt);
+            codeRepository.save(verificationCode);
+
+            response.put("status", "获取成功");
+        } else {
+            response.put("status", "获取失败");
         }
-        return response ;
+
+        return response;
     }
 
     @RequestMapping("checkEmailCode")
-    public String checkEamilCode(@RequestBody EmailVerificationRequest request  , HttpSession httpSession) {
-        //从session中取出验证码
+    public String checkEamilCode(@RequestBody EmailVerificationCode request) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        Optional<EmailVerificationCode> codeOptional = codeRepository.findByEmailAndCodeAndExpiresAtGreaterThan(
+                request.getEmail(), request.getCode(), currentTime);
 
-        if (httpSession.getAttribute("code")==null){
-            System.out.println(httpSession.getId());
-            System.out.println(httpSession.getAttribute("code"));
-            System.out.println("验证码为空");
-        }
-        String code1 = httpSession.getAttribute("code").toString();
-        if (request.code.equals(code1)) {
+        if (codeOptional.isPresent()) {
             return "验证码正确";
+        } else {
+            return "验证码错误或已过期";
         }
-
-        return "验证码错误";
     }
-
-
-
-
 }
+

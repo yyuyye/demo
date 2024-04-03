@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.ErrorManager;
 
 /**
  * (User)表服务实现类
@@ -28,9 +29,12 @@ public class UserServiceImpl implements UserService {
      public Map login(String username, String password){
         user=userDao.login(username,password);
          HashMap map = new HashMap();
-         map.put("username",user.getUsername());
-         map.put("email",user.getEmail());
-         return map;
+        if (user == null){
+            return map;
+        }
+        map.put("username",user.getUsername());
+        map.put("email",user.getEmail());
+        return map;
     }
 
     @Override
