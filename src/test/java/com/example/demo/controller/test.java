@@ -1,23 +1,17 @@
 package com.example.demo.controller;
 
-import org.junit.jupiter.api.Test;
-import redis.clients.jedis.Jedis;
+import org.json.JSONObject;
 
-import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class test {
-
-
     public static void main(String[] args) {
-        double fee;
-        int i = 45821;
-        fee = (double) i /100;
-        System.out.println(fee);
+        String jsonStr = "{\"DeviceUName\":\"SSJ_Test_0944\",\"MapData\":{\"state\": 14,\"blockage\": 0,\"track\": 0,\"runningDirection\": 0,\"power\": 3.0092516,\"speed\": 7,\"temperature\": -1.8519077,\"vibration\": 12.336168,\"electricity\": 2.2876384,\"voltage\": 224.8767,\"noise\": 20,\"method\": 0,\"mode\": 1,\"faultCode\": 3,\"alertCode\": 7},\"Timestamp\":\"2023-04-23T14:19:48.087069+08:00\"}";
+        JSONObject jsonObj = new JSONObject(jsonStr);
+        JSONObject mapDataObj = jsonObj.getJSONObject("MapData");
+        System.out.println("alertCode: " + mapDataObj.getInt("alertCode"));
+        System.out.println("Vibration: " + mapDataObj.getDouble("vibration"));
     }
-
 }
