@@ -26,19 +26,19 @@ public class EmailController {
     @RequestMapping("getEmailCode")
     public Map<String, String> getEmail(@RequestParam String toEmail) {
         Random random = new Random();
-        String code = String.format("%06d", random.nextInt(999999));
+        String verificationCode = String.format("%06d", random.nextInt(999999));
 
         Map<String, String> response = new HashMap<>();
 
-        if (emailService.sendEmail(toEmail, "验证码", "欢迎注册，您的验证码为：" + code)) {
+        if (emailService.sendEmail(toEmail, "验证码", "欢迎注册，您的验证码为：" + verificationCode)) {
             // 保存验证码到数据库
-            LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(5); // 验证码有效期为5分钟
-            EmailVerificationCode verificationCode = new EmailVerificationCode();
-            verificationCode.setEmail(toEmail);
-            verificationCode.setCode(code);
-            verificationCode.setCreatedAt(LocalDateTime.now());
-            verificationCode.setExpiresAt(expiresAt);
-            codeRepository.save(verificationCode);
+            LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(5); // 验证码有效期为5分钟
+            EmailVerificationCode EmailVerificationCode = new EmailVerificationCode();
+            EmailVerificationCode.setEmail(toEmail);
+            EmailVerificationCode.setVerificationCode(verificationCode);
+            EmailVerificationCode.setCreatedAt(LocalDateTime.now());
+            EmailVerificationCode.setExpiredAt(expiredAt);
+            codeRepository.save(EmailVerificationCode);
 
             response.put("status", "获取成功");
         } else {
@@ -49,10 +49,10 @@ public class EmailController {
     }
 
     @RequestMapping("checkEmailCode")
-    public String checkEamilCode(@RequestBody EmailVerificationCode request) {
+    public String checkEmailCode(@RequestBody EmailVerificationCode request) {
         LocalDateTime currentTime = LocalDateTime.now();
-        Optional<EmailVerificationCode> codeOptional = codeRepository.findByEmailAndCodeAndExpiresAtGreaterThan(
-                request.getEmail(), request.getCode(), currentTime);
+        Optional<EmailVerificationCode> codeOptional = codeRepository.findByEmailAndVerificationCodeAndExpiredAtGreaterThan(
+                request.getEmail(), request.getVerificationCode(),currentTime);
 
         if (codeOptional.isPresent()) {
             return "验证码正确";

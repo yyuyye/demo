@@ -39,18 +39,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map save(User user) {
-        String uid=user.getUid();
-        String password=user.getPassword();
-        String email=user.getEmail();
-        String username=user.getUsername();
-        userDao.save(uid,username,email,password);
+        String uid = user.getUid();
+        String password = user.getPassword();
+        String email = user.getEmail();
+        String username = user.getUsername();
         Map map = new HashMap();
-        if(userDao.query(uid)){
-            map.put("msg","该用户已存在");
-        }else{
-            map.put("msg","注册成功");
+        if (userDao.query(uid) != null) {
+            map.put("msg", "该用户已存在");
+        } else {
+            userDao.save(uid, username, email, password);
+            map.put("msg", "注册成功");
         }
 
         return map;
     }
+
 }

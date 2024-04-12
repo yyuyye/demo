@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,17 +12,20 @@ public class EmailVerificationCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(nullable = false)
     private String email;
 
+    @Getter
     @Column(nullable = false, length = 6)
-    private String code;
+    private String verificationCode;
 
+    @Getter
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime expiresAt;
+    private LocalDateTime expiredAt;
 
     public Long getId() {
         return id;
@@ -38,12 +43,12 @@ public class EmailVerificationCode {
         this.email = email;
     }
 
-    public String getCode() {
-        return code;
+    public String getVerificationCode() {
+        return verificationCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -54,12 +59,13 @@ public class EmailVerificationCode {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
+    public LocalDateTime getExpiredAt() {
+        return expiredAt;
     }
 
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
+    public void setExpiredAt(LocalDateTime expiredAt) {
+        this.expiredAt = expiredAt;
     }
+
 // Getters and Setters
 }

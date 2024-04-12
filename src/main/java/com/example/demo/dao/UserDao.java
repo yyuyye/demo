@@ -21,9 +21,11 @@ public interface UserDao {
     public User login(String uid, String password);
 
     @Insert("insert into mentaltest.user (uid,username,email,password) values (#{uid},#{username},#{email},#{password})")
-    public int save(String uid, String username, String email, String password);
+    public void save(String uid, String username, String email, String password);
 
     @Select("select * from mentaltest.user t where t.uid = #{uid}")
-    boolean query(String uid);
+    User query(String uid);
+
+
 }
 
