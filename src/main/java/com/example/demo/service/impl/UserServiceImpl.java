@@ -32,6 +32,8 @@ public class UserServiceImpl implements UserService {
         if (user == null){
             return map;
         }
+        map.put("id",user.getId());
+        map.put("uid",user.getUid());
         map.put("username",user.getUsername());
         map.put("email",user.getEmail());
         return map;

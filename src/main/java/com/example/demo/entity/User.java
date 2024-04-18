@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -18,7 +19,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Component
 public class User implements Serializable {
+    @Serial
     private static final long serialVersionUID = 925348207891454661L;
+    /**
+     * 主键
+     */
+    private Integer id ;
+
+
 
     private String uid;
 
@@ -28,8 +36,15 @@ public class User implements Serializable {
 
     private String email;
 
-    private Integer isdelete;
 
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUid() {
         return uid;
@@ -63,13 +78,6 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Integer getIsdelete() {
-        return isdelete;
-    }
-
-    public void setIsdelete(Integer isdelete) {
-        this.isdelete = isdelete;
-    }
 
 }
 
