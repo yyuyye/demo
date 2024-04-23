@@ -20,8 +20,8 @@ public interface UserDao {
     @Select("select * from mentaltest.user t where t.uid = #{uid} AND t.password = #{password}")
     public User login(String uid, String password);
 
-    @Insert("insert into mentaltest.user (uid,username,email,password) values (#{uid},#{username},#{email},#{password})")
-    public void save(String uid, String username, String email, String password);
+    @Insert("insert into mentaltest.user (uid,username,email,password,avatar) values (#{uid},#{username},#{email},#{password},#{avatar})")
+    public void save(String uid, String username, String email, String password, String avatar);
 
     @Select("select * from mentaltest.user t where t.uid = #{uid}")
     User query(String uid);

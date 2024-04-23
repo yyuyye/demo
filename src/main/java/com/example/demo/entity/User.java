@@ -26,8 +26,6 @@ public class User implements Serializable {
      */
     private Integer id ;
 
-
-
     private String uid;
 
     private String username;
@@ -36,7 +34,15 @@ public class User implements Serializable {
 
     private String email;
 
+    private String avatar;
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public Integer getId() {
         return id;

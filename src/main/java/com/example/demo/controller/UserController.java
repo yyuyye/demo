@@ -49,6 +49,7 @@ public class UserController {
         user.setUsername(requestBody.get("username"));
         user.setPassword(requestBody.get("password"));
         user.setEmail(requestBody.get("email"));
+        user.setAvatar("/static/1.jpg");
         Map map = userService.save(user);
         if (map.get("msg").equals("注册成功")){
             return new R("200", "success", "注册成功");

@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
         map.put("uid",user.getUid());
         map.put("username",user.getUsername());
         map.put("email",user.getEmail());
+        map.put("avatar",user.getAvatar());
         return map;
     }
 
@@ -45,11 +46,12 @@ public class UserServiceImpl implements UserService {
         String password = user.getPassword();
         String email = user.getEmail();
         String username = user.getUsername();
+        String avatar = user.getAvatar();
         Map map = new HashMap();
         if (userDao.query(uid) != null) {
             map.put("msg", "该用户已存在");
         } else {
-            userDao.save(uid, username, email, password);
+            userDao.save(uid, username, email, password,avatar);
             map.put("msg", "注册成功");
         }
 
