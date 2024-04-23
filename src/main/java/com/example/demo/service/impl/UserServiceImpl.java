@@ -58,4 +58,13 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    @Override
+    public Map update(String avatar,String uid) {
+
+         userDao.update(avatar, uid);
+        Map map = new HashMap();
+        map.put("msg","success");
+        return map;
+    }
+
 }

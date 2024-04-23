@@ -4,6 +4,7 @@ import com.example.demo.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public interface UserDao {
 
     @Select("select * from mentaltest.user t where t.uid = #{uid}")
     User query(String uid);
+
+    @Update("update mentaltest.user t set t.avatar = #{avatar} where t.uid = #{uid}")
+    public void update(String avatar,String uid);
 
 
 }

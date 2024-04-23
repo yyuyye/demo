@@ -16,4 +16,8 @@ public interface UserService {
     Map login(String username, String password);
 
     Map save(User user);
+
+    Map update(String avatar,String uid);
+
+
 }

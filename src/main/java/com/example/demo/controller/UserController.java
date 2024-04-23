@@ -60,5 +60,18 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/avatar")
+    public R avatar( @RequestBody Map<String, String> requestBody ) {
+        String avatar = requestBody.get("avatar");
+        String uid = requestBody.get("uid");
+        Map map;
+        map = userService.update(avatar, uid);
+        if (map.size() > 0) {
+            return new R(map);
+        } else {
+            return new R("201", "error", "修改头像失败！");
+        }
+    }
+
 }
 
