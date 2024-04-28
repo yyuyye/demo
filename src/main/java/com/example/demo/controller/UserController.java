@@ -65,11 +65,41 @@ public class UserController {
         String avatar = requestBody.get("avatar");
         String uid = requestBody.get("uid");
         Map map;
-        map = userService.update(avatar, uid);
+        map = userService.updateavatar(avatar, uid);
         if (map.size() > 0) {
             return new R(map);
         } else {
             return new R("201", "error", "修改头像失败！");
+        }
+    }
+
+    @RequestMapping("/username")
+    public R username( @RequestBody Map<String, String> requestBody ) {
+        String username = requestBody.get("username");
+        String uid = requestBody.get("uid");
+        Map map;
+        map = userService.updateusername(username, uid);
+        if (map.size() > 0) {
+            return new R(map);
+        } else {
+            return new R("201", "error", "修改名字失败！");
+        }
+    }
+
+
+    @PostMapping("/password")
+    public R changePassword(@RequestBody Map<String, String> requestBody) {
+        String oldpwd = requestBody.get("oldPassword");
+        String newpwd = requestBody.get("newPassword");
+        String uid = requestBody.get("uid");
+        Map map = new HashMap();
+        map = userService.changePassword(oldpwd, newpwd,uid);
+        if (map.get("msg").equals("success")){
+            return new R("200", "success", "修改成功");
+        } else if (map.get("msg").equals("旧密码错误")){
+            return new R("201", "error", "旧密码错误");
+        } else {
+            return new R("201", "error", "新密码不能与旧密码相同");
         }
     }
 

@@ -17,7 +17,9 @@ public interface UserService {
 
     Map save(User user);
 
-    Map update(String avatar,String uid);
+    Map updateavatar(String avatar,String uid);
 
+    Map updateusername(String username,String uid);
 
+    Map changePassword(String old,String newpwd,String uid);
 }

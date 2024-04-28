@@ -30,7 +30,31 @@ public class EmailController {
 
         Map<String, String> response = new HashMap<>();
 
-        if (emailService.sendEmail(toEmail, "验证码", "欢迎注册，您的验证码为：" + verificationCode)) {
+        if (emailService.sendEmail(toEmail, "验证码", "欢迎注册YuYe心理测试，您的验证码为（有效期5分钟）：" + verificationCode)) {
+            // 保存验证码到数据库
+            LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(5); // 验证码有效期为5分钟
+            EmailVerificationCode EmailVerificationCode = new EmailVerificationCode();
+            EmailVerificationCode.setEmail(toEmail);
+            EmailVerificationCode.setVerificationCode(verificationCode);
+            EmailVerificationCode.setCreatedAt(LocalDateTime.now());
+            EmailVerificationCode.setExpiredAt(expiredAt);
+            codeRepository.save(EmailVerificationCode);
+
+            response.put("status", "获取成功");
+        } else {
+            response.put("status", "获取失败");
+        }
+
+        return response;
+    }
+    @RequestMapping("changeEmailCode")
+    public Map<String, String> changeEmail(@RequestParam String toEmail) {
+        Random random = new Random();
+        String verificationCode = String.format("%06d", random.nextInt(999999));
+
+        Map<String, String> response = new HashMap<>();
+
+        if (emailService.sendEmail(toEmail, "修改邮箱", "您正在修改你的邮箱，您的验证码为（有效期5分钟）：" + verificationCode+"\n"+"请不要向他人泄露您的验证码")) {
             // 保存验证码到数据库
             LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(5); // 验证码有效期为5分钟
             EmailVerificationCode EmailVerificationCode = new EmailVerificationCode();

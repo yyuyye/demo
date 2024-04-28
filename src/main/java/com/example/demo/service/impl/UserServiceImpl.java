@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.ErrorManager;
 
 /**
@@ -25,18 +26,19 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Resource
     private User user;
-     @Override
-     public Map login(String username, String password){
-        user=userDao.login(username,password);
-         HashMap map = new HashMap();
-        if (user == null){
+
+    @Override
+    public Map login(String username, String password) {
+        user = userDao.login(username, password);
+        HashMap map = new HashMap();
+        if (user == null) {
             return map;
         }
-        map.put("id",user.getId());
-        map.put("uid",user.getUid());
-        map.put("username",user.getUsername());
-        map.put("email",user.getEmail());
-        map.put("avatar",user.getAvatar());
+        map.put("id", user.getId());
+        map.put("uid", user.getUid());
+        map.put("username", user.getUsername());
+        map.put("email", user.getEmail());
+        map.put("avatar", user.getAvatar());
         return map;
     }
 
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if (userDao.query(uid) != null) {
             map.put("msg", "该用户已存在");
         } else {
-            userDao.save(uid, username, email, password,avatar);
+            userDao.save(uid, username, email, password, avatar);
             map.put("msg", "注册成功");
         }
 
@@ -59,12 +61,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map update(String avatar,String uid) {
+    public Map updateavatar(String avatar, String uid) {
 
-         userDao.update(avatar, uid);
+        userDao.updateavatar(avatar, uid);
         Map map = new HashMap();
-        map.put("msg","success");
+        map.put("msg", "success");
         return map;
     }
+
+    @Override
+    public Map updateusername(String username, String uid) {
+
+        userDao.updateusername(username, uid);
+        Map map = new HashMap();
+        map.put("msg", "success");
+        return map;
+    }
+
+    @Override
+    public Map changePassword(String old, String newpwd, String uid) {
+        if (userDao.login(uid, old) == null) {
+            Map map = new HashMap();
+            map.put("msg", "旧密码错误");
+            return map;
+        } else if (Objects.equals(old, newpwd)) {
+            Map map = new HashMap();
+            map.put("msg", "新密码不能与旧密码相同");
+            return map;
+        } else {
+            userDao.changePassword(newpwd, uid);
+            Map map = new HashMap();
+            map.put("msg", "success");
+            return map;
+        }
+    }
+
 
 }

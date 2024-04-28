@@ -28,8 +28,13 @@ public interface UserDao {
     User query(String uid);
 
     @Update("update mentaltest.user t set t.avatar = #{avatar} where t.uid = #{uid}")
-    public void update(String avatar,String uid);
+    public void updateavatar(String avatar, String uid);
 
+    @Update("update mentaltest.user t set t.username = #{usernmae} where t.uid = #{uid}")
+    public void updateusername(String usernmae, String uid);
+
+    @Update("update mentaltest.user t set t.password = #{pwd} where t.uid = #{udi}")
+    public void changePassword(String pwd, String udi);
 
 }
 
