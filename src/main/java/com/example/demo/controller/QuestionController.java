@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class QuestionController {
     private QuestionService questionService;
 
     @GetMapping
-    public ResponseEntity<List<Questions>> getAllQuestions() {
-        List<Questions> questions = questionService.getAllQuestions(1);
+    public ResponseEntity<List<Questions>> getAllQuestions(@RequestParam("questionId") int questionId) {
+        List<Questions> questions = questionService.getAllQuestions(questionId);
         return ResponseEntity.ok(questions);
     }
 }

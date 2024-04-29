@@ -22,4 +22,6 @@ public interface UserService {
     Map updateusername(String username,String uid);
 
     Map changePassword(String old,String newpwd,String uid);
+
+    Map changeEmail(String email,String uid);
 }

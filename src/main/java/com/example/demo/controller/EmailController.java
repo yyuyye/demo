@@ -54,7 +54,7 @@ public class EmailController {
 
         Map<String, String> response = new HashMap<>();
 
-        if (emailService.sendEmail(toEmail, "修改邮箱", "您正在修改你的邮箱，您的验证码为（有效期5分钟）：" + verificationCode+"\n"+"请不要向他人泄露您的验证码")) {
+        if (emailService.sendEmail(toEmail, "修改邮箱", "您正在修改你的邮箱，您的验证码为（有效期5分钟）：" + verificationCode+"\n    请不要向他人泄露您的验证码")) {
             // 保存验证码到数据库
             LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(5); // 验证码有效期为5分钟
             EmailVerificationCode EmailVerificationCode = new EmailVerificationCode();

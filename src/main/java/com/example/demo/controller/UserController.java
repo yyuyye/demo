@@ -103,5 +103,21 @@ public class UserController {
         }
     }
 
+    @PostMapping("/email")
+    public R changeEmail(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String uid = requestBody.get("uid");
+        Map map = new HashMap();
+        if (StringUtils.isEmpty(email) && StringUtils.isEmpty(uid)){
+            return new R("201", "error", "邮箱或id不能为空");
+        }
+        map = userService.changeEmail(email,uid);
+        if (map.get("msg").equals("success")){
+            return new R("200", "success", "修改成功");
+        } else  {
+            return new R("201", "error", map.toString());
+        }
+    }
+
 }
 

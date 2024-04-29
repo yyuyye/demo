@@ -36,5 +36,7 @@ public interface UserDao {
     @Update("update mentaltest.user t set t.password = #{pwd} where t.uid = #{udi}")
     public void changePassword(String pwd, String udi);
 
+    @Update("update mentaltest.user t set t.email = #{email} where t.uid = #{uid}")
+    public void changeEmail(String email, String uid);
 }
 

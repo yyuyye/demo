@@ -95,6 +95,14 @@ public class UserServiceImpl implements UserService {
             return map;
         }
     }
+    @Override
+    public Map changeEmail(String newEmail, String uid) {
+            userDao.changeEmail(newEmail, uid);
+            Map map = new HashMap();
+            map.put("msg", "success");
+            return map;
+        }
+
 
 
 }
