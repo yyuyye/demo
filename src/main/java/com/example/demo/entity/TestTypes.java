@@ -1,12 +1,14 @@
 package com.example.demo.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
-
-public class UserAnswer {
+@Entity
+public class TestTypes {
+    @Id
     private Integer id;
-    private Integer userId;
-    private Integer questionId;
-    private Integer optionId;
+    private String name;
+    private String description;
     private Date createdAt;
     private Date updatedAt;
 
@@ -18,28 +20,20 @@ public class UserAnswer {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getQuestionId() {
-        return questionId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
-
-    public Integer getOptionId() {
-        return optionId;
-    }
-
-    public void setOptionId(Integer optionId) {
-        this.optionId = optionId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getCreatedAt() {
@@ -57,4 +51,6 @@ public class UserAnswer {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
 }

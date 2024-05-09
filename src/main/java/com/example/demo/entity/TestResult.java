@@ -1,10 +1,17 @@
 package com.example.demo.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-
+@Entity
+@Table(name = "test_results")
 public class TestResult {
+    @Id
+    @GeneratedValue
     private Integer id;
-    private Integer userId;
+
     private Integer testTypeId;
     private Integer score;
 
@@ -14,14 +21,6 @@ public class TestResult {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getTestTypeId() {
@@ -67,4 +66,6 @@ public class TestResult {
     private String resultText;
     private Date createdAt;
     private Date updatedAt;
+
+
 }
